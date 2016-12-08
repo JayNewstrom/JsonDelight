@@ -1,0 +1,17 @@
+{
+  "aString": "a",
+  "aBoolean": true,
+  "aBoxedBoolean": false,
+  "aByte": 0,
+  "aBoxedByte": 1,
+  "aShort": 2,
+  "aBoxedShort": 3,
+  "aInt": 4,
+  "aBoxedInt": 5,
+  "aLong": 6,
+  "aBoxedLong": 7,
+  "aFloat": 0.2,
+  "aBoxedFloat": 0.4,
+  "aDouble": 0.6,
+  "aBoxedDouble": 0.8
+}

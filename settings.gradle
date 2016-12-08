@@ -1,0 +1,5 @@
+include 'integration-tests'
+include 'gradle-plugin'
+include 'compiler'
+include 'runtime'
+include 'retrofit-converter'

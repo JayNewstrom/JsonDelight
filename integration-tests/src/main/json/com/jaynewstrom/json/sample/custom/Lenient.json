@@ -1,0 +1,10 @@
+{
+  "fields": [
+    {
+      "name": "foo",
+      "type": "boolean",
+      "customSerializer": "LenientBooleanSerializer",
+      "customDeserializer": "LenientBooleanDeserializer"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "fields": [
+    {"name": "basic", "type": "String", "isList": true}
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "fields": [
+    {"name": "nested", "isList": true, "type": "Inner"}
+  ]
+}

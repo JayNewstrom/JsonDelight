@@ -1,0 +1,19 @@
+{
+  "fields": [
+    {"name": "aString", "type": "String"},
+    {"name": "aBoolean", "type": "boolean"},
+    {"name": "aBoxedBoolean", "type": "Boolean"},
+    {"name": "aByte", "type": "byte"},
+    {"name": "aBoxedByte", "type": "Byte"},
+    {"name": "aShort", "type": "short"},
+    {"name": "aBoxedShort", "type": "Short"},
+    {"name": "aInt", "type": "int"},
+    {"name": "aBoxedInt", "type": "Integer"},
+    {"name": "aLong", "type": "long"},
+    {"name": "aBoxedLong", "type": "Long"},
+    {"name": "aFloat", "type": "float"},
+    {"name": "aBoxedFloat", "type": "Float"},
+    {"name": "aDouble", "type": "double"},
+    {"name": "aBoxedDouble", "type": "Double"}
+  ]
+}

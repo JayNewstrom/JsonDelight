@@ -1,0 +1,5 @@
+{
+  "fields": [
+    {"name": "foo", "type": "java.util.Date", "customSerializer": "DateSerializer", "customDeserializer": "DateDeserializer"}
+  ]
+}
