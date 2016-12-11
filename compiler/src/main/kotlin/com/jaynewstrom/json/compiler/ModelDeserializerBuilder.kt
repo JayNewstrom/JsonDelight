@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
 import com.jaynewstrom.json.runtime.JsonDeserializer
 import com.jaynewstrom.json.runtime.JsonDeserializerFactory
+import com.jaynewstrom.json.runtime.internal.ExtraneousArrayConsumer
+import com.jaynewstrom.json.runtime.internal.ExtraneousObjectConsumer
 import com.jaynewstrom.json.runtime.internal.ListDeserializer
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.MethodSpec
@@ -52,7 +54,8 @@ internal data class ModelDeserializerBuilder(val name: String, val fields: List<
         methodBuilder.beginControlFlow("while ($JSON_PARSER_VARIABLE_NAME.nextToken() != \$T.\$L)", JsonToken::class.java,
                 JsonToken.END_OBJECT)
         methodBuilder.addStatement("String fieldName = $JSON_PARSER_VARIABLE_NAME.getCurrentName()")
-        methodBuilder.beginControlFlow("if ($JSON_PARSER_VARIABLE_NAME.nextToken() == \$T.\$L)", JsonToken::class.java,
+        methodBuilder.addStatement("\$T nextToken = $JSON_PARSER_VARIABLE_NAME.nextToken()", JsonToken::class.java)
+        methodBuilder.beginControlFlow("if (nextToken == \$T.\$L)", JsonToken::class.java,
                 JsonToken.VALUE_NULL)
         methodBuilder.addStatement("continue")
         methodBuilder.endControlFlow()
@@ -68,6 +71,10 @@ internal data class ModelDeserializerBuilder(val name: String, val fields: List<
                 }
                 field.assignVariable(methodBuilder)
             }
+            methodBuilder.nextControlFlow("else if (nextToken == \$T.\$L)", JsonToken::class.java, JsonToken.START_OBJECT)
+            methodBuilder.addStatement("\$T.INSTANCE.consume($JSON_PARSER_VARIABLE_NAME)", ExtraneousObjectConsumer::class.java)
+            methodBuilder.nextControlFlow("else if (nextToken == \$T.\$L)", JsonToken::class.java, JsonToken.START_ARRAY)
+            methodBuilder.addStatement("\$T.INSTANCE.consume($JSON_PARSER_VARIABLE_NAME)", ExtraneousArrayConsumer::class.java)
             methodBuilder.endControlFlow() // End if / else if.
         }
         methodBuilder.endControlFlow() // End while loop.
