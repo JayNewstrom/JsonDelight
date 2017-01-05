@@ -21,7 +21,16 @@ Publish to mavenLocal
 Releasing to bintray
 --------------------
 
-1. Update `ARTIFACT_VERSION` in `plugin/gradle.properties`
-2. Update `ARTIFACT_VERSION` in `tests/gradle.properties`
-3. `cd plugin`
-4. `./gradlew bintrayUpload`
+1. Remove `SNAPSHOT` from `ARTIFACT_VERSION` in `plugin/gradle.properties`
+2. Remove `SNAPSHOT` from `ARTIFACT_VERSION` in `tests/gradle.properties`
+3. Update versions in `README.md`
+4. `rm -rf ~/.m2/repositories/com/jaynewstrom/json/*`
+5. `cd plugin`
+6. `./gradlew clean bintrayUpload`
+7. Publish the artifacts from the bintray website
+8. `cd ..`
+9. `git add . && git commit -m "Release version x.y.z"`
+10. Add `SNAPSHOT` to `ARTIFACT_VERSION` in `plugin/gradle.properties`
+11. Add `SNAPSHOT` to `ARTIFACT_VERSION` in `tests/gradle.properties`
+12. `git add . && git commit -m "Prepare for next development iteration"`
+13. `git push && git push --tags`

@@ -27,7 +27,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.jaynewstrom.json:gradle-plugin:0.8.0'
+        classpath 'com.jaynewstrom.json:gradle-plugin:0.8.1'
     }
 }
 
@@ -55,7 +55,7 @@ An example json file is below.
       "type": "String", // Required!
       "public": false, // Not required, defaults to the types public flag.
       "jsonName": "foo", // Not required, defaults to the "name" property.
-      "isList": false, // Not required, defaults to false.
+      "list": false, // Not required, defaults to false.
       "required": true, // Not required, defaults to true if object, defaults to false if primitive.
       "customSerializer": null, // Not required.
       "customDeserializer": null // Not required.
@@ -104,7 +104,7 @@ Add the retrofit dependency to your `build.gradle`.
 ```groovy
 dependencies {
     ...
-    compile 'com.jaynewstrom.json:retrofit-converter:0.8.0'
+    compile 'com.jaynewstrom.json:retrofit-converter:0.8.1'
 }
 ```
 
