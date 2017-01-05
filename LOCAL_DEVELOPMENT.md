@@ -30,7 +30,7 @@ Releasing to bintray
 7. Publish the artifacts from the bintray website
 8. `cd ..`
 9. `git add . && git commit -m "Release version x.y.z"`
-10. Add `SNAPSHOT` to `ARTIFACT_VERSION` in `plugin/gradle.properties`
-11. Add `SNAPSHOT` to `ARTIFACT_VERSION` in `tests/gradle.properties`
+10. Increment the version, and add `SNAPSHOT` to `ARTIFACT_VERSION` in `plugin/gradle.properties`
+11. Increment the version, and add `SNAPSHOT` to `ARTIFACT_VERSION` in `tests/gradle.properties`
 12. `git add . && git commit -m "Prepare for next development iteration"`
 13. `git push && git push --tags`
