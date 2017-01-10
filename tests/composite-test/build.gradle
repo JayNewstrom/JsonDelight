@@ -1,0 +1,17 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.jaynewstrom.json'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 25
+    }
+}
+
+dependencies {
+    testCompile dep.junit
+    testCompile dep.fest
+}

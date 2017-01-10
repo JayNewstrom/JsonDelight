@@ -1,0 +1,7 @@
+{
+  "public": true,
+  "createSerializer": true,
+  "fields": [
+    {"name": "foo", "type": "String"}
+  ]
+}

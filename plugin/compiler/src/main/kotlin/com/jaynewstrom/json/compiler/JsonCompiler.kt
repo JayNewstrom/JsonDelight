@@ -3,7 +3,6 @@ package com.jaynewstrom.json.compiler
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.ParameterizedTypeName
-import com.squareup.javapoet.TypeName
 import com.squareup.javapoet.WildcardTypeName
 import java.io.File
 import javax.lang.model.element.Modifier
@@ -15,8 +14,8 @@ class JsonCompiler {
         const val FILE_EXTENSION = "json"
 
         val OUTPUT_DIRECTORY = listOf("generated", "source", "json")
-
-        val QUESTION_MARK_WILDCARD_TYPE_NAME: TypeName = WildcardTypeName.subtypeOf(Any::class.java)
+        val COMPOSITE_OUTPUT_DIRECTORY = listOf("generated", "source", "jsonComposite")
+        val RESOURCE_OUTPUT_DIRECTORY = listOf("generated", "resources", "jsonComposite")
 
         fun deserializerName(jsonFileName: String) = jsonFileName + DESERIALIZER_SUFFIX
 

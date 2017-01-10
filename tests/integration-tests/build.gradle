@@ -1,20 +1,6 @@
-buildscript {
-    repositories {
-        jcenter()
-        mavenLocal()
-    }
-    dependencies {
-        classpath dep.androidPlugin
-        classpath "com.jaynewstrom.json:gradle-plugin:$ARTIFACT_VERSION"
-    }
-}
-
-repositories {
-    mavenLocal()
-}
-
 apply plugin: 'com.android.library'
 apply plugin: 'com.jaynewstrom.json'
+apply plugin: 'com.jaynewstrom.json.composite'
 
 android {
     compileSdkVersion 25
@@ -28,9 +14,9 @@ android {
 
 dependencies {
     annotationProcessor 'com.google.auto.value:auto-value:1.3'
-    annotationProcessor dep.jsonCompositeFactory
     provided 'com.jakewharton.auto.value:auto-value-annotations:1.3'
     compile "com.jaynewstrom.json:retrofit-converter:$ARTIFACT_VERSION"
+    compile project(':composite-test')
 
     testCompile dep.junit
     testCompile dep.fest

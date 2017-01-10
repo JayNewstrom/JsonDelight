@@ -1,12 +1,10 @@
-package com.jaynewstrom.json.gradle
+package com.jaynewstrom.json.composite
 
 import com.android.build.gradle.AppExtension
 import com.android.build.gradle.AppPlugin
 import com.android.build.gradle.LibraryExtension
 import com.android.build.gradle.LibraryPlugin
 import com.android.build.gradle.api.BaseVariant
-import com.jaynewstrom.json.compiler.JsonCompiler
-import com.jaynewstrom.json.compiler.JsonCompiler.Companion.FILE_EXTENSION
 import com.jaynewstrom.json.compiler.VERSION
 import org.gradle.api.DomainObjectSet
 import org.gradle.api.Plugin
@@ -15,7 +13,7 @@ import org.gradle.api.artifacts.DependencyResolutionListener
 import org.gradle.api.artifacts.ResolvableDependencies
 import java.io.File
 
-class JsonPlugin : Plugin<Project> {
+class CompositePlugin : Plugin<Project> {
     override fun apply(project: Project) {
         project.plugins.all {
             when (it) {
@@ -28,9 +26,7 @@ class JsonPlugin : Plugin<Project> {
     }
 
     private fun <T : BaseVariant> configureAndroid(project: Project, variants: DomainObjectSet<T>) {
-        project.extensions.create("json", JsonExtension::class.java)
-
-        val generateJsonModel = project.task("generateJsonModel")
+        val generateCompositeFactories = project.task("generateJsonCompositeFactories")
 
         val compileDeps = project.configurations.getByName("compile").dependencies
         project.gradle.addListener(object : DependencyResolutionListener {
@@ -44,32 +40,18 @@ class JsonPlugin : Plugin<Project> {
         })
 
         variants.all {
-            val taskName = "generate${it.name.capitalize()}JsonModel"
-            val task = project.tasks.create(taskName, JsonTask::class.java) { jsonTask ->
-                val extension = project.extensions.getByType(JsonExtension::class.java)
-                jsonTask.createSerializerByDefault = extension.createSerializerByDefault
-                jsonTask.createDeserializerByDefault = extension.createDeserializerByDefault
-                jsonTask.useAutoValueByDefault = extension.useAutoValueByDefault
-                jsonTask.addToCompositeFactory = extension.addToCompositeFactory
-            }
-            task.group = "jsonmodel"
+            val taskName = "generate${it.name.capitalize()}JsonCompositeFactories"
+            val task = project.tasks.create(taskName, CompositeTask::class.java)
+            task.group = "jsoncomposite"
             task.buildDirectory = project.buildDir
-            task.description = "Generate Json Models and Factories for ${it.name}"
+            task.description = "Generate Json Composite Factories for ${it.name}"
             task.source("src")
-            task.include("**${File.separatorChar}*.$FILE_EXTENSION")
-            task.exclude("**${File.separatorChar}resources${File.separatorChar}**")
-            task.exclude("**${File.separatorChar}assets${File.separatorChar}**")
+            task.include("**/resources/META-INF/jsonComposite/JsonSerializers.json".replace('/', File.separatorChar))
+            task.include("**/resources/META-INF/jsonComposite/JsonDeserializers.json".replace('/', File.separatorChar))
 
-            generateJsonModel.dependsOn(task)
+            generateCompositeFactories.dependsOn(task)
 
             it.registerJavaGeneratingTask(task, task.outputDirectory)
-
-            val resourcesOutputDirectory = JsonCompiler.RESOURCE_OUTPUT_DIRECTORY.fold(task.buildDirectory, ::File)
-            it.sourceSets.forEach { sourceSet ->
-                if (sourceSet.name == it.name) {
-                    sourceSet.resourcesDirectories.add(resourcesOutputDirectory) // TODO: This doesn't work!
-                }
-            }
         }
     }
 }

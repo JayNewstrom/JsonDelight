@@ -29,15 +29,13 @@ buildscript {
     }
     dependencies {
         classpath 'com.jaynewstrom.json:gradle-plugin:0.8.1'
+        classpath 'com.jaynewstrom.json:composite:0.8.1'
     }
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.jaynewstrom.json'
-
-dependencies {
-    annotationProcessor 'com.jaynewstrom.json:composite:0:8:1'
-}
+apply plugin: 'com.jaynewstrom.json.composite'
 ```
 
 Usage
@@ -69,7 +67,7 @@ An example json file is below.
 Custom Serializers/Deserializers
 --------------------------------
 Have a type that you can't generate? Platform types such as java.Util.Date can still be (de)serialized!
-Just add the `@AddToCompositeFactory` annotation to your custom (de)serializers.
+Just call `compositeJsonDeserializerFactory.register(...)` or `compositeJsonSerializerFactory.register(...)` to register your custom (de)serializers.
 
 Field Specific Serializers/Deserializers
 ----------------------------------------
@@ -81,7 +79,7 @@ Working with other json parsers
 -------------------------------
 Want to work with data that is a little more dynamic? Want to use jackson-databind? Have models that aren't performance critical?
 You can use a custom `JsonSerializer` or `JsonDeserializer` to bridge the gap between the libraries!
-Just add the `@AddToCompositeFactory` annotation to the class to register your custom (de)serializers.
+Just call `compositeJsonDeserializerFactory.register(...)` or `compositeJsonSerializerFactory.register(...)` to register your custom (de)serializers.
 
 Use with AutoValue
 ------------------

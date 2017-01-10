@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class JsonDeserializerFactory {
-    final Map<Class<?>, JsonDeserializer<?>> deserializerMap;
+    private final Map<Class<?>, JsonDeserializer<?>> deserializerMap;
 
     public JsonDeserializerFactory() {
         this(0);

@@ -2,7 +2,6 @@ package com.jaynewstrom.json.compiler
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
-import com.jaynewstrom.json.runtime.AddToCompositeFactory
 import com.jaynewstrom.json.runtime.JsonDeserializer
 import com.jaynewstrom.json.runtime.JsonDeserializerFactory
 import com.jaynewstrom.json.runtime.internal.ExtraneousArrayConsumer
@@ -16,8 +15,7 @@ import com.squareup.javapoet.TypeSpec
 import java.io.IOException
 import javax.lang.model.element.Modifier
 
-internal data class ModelDeserializerBuilder(val name: String, val fields: List<FieldDefinition>, val useAutoValue: Boolean,
-        val addToCompositeFactory: Boolean) {
+internal data class ModelDeserializerBuilder(val name: String, val fields: List<FieldDefinition>, val useAutoValue: Boolean) {
     fun build(): TypeSpec {
         val jsonDeserializerType = ClassName.get(JsonDeserializer::class.java)
         val typeSpec = TypeSpec.classBuilder(JsonCompiler.deserializerName(name))
@@ -25,9 +23,6 @@ internal data class ModelDeserializerBuilder(val name: String, val fields: List<
                 .addSuperinterface(ParameterizedTypeName.get(jsonDeserializerType, JsonCompiler.jsonModelType(name)))
                 .addMethod(JsonCompiler.modelClassMethodSpec(name))
                 .addMethod(createMethodSpec())
-        if (addToCompositeFactory) {
-            typeSpec.addAnnotation(AddToCompositeFactory::class.java)
-        }
         return typeSpec.build()
     }
 
