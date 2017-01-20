@@ -27,16 +27,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.jaynewstrom.json:gradle-plugin:0.8.1'
+        classpath 'com.jaynewstrom.json:gradle-plugin:0.8.3'
     }
 }
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.jaynewstrom.json'
-
-json {
-    defaultPackage {your base package here}
-}
 ```
 
 Usage
@@ -104,7 +100,7 @@ Add the retrofit dependency to your `build.gradle`.
 ```groovy
 dependencies {
     ...
-    compile 'com.jaynewstrom.json:retrofit-converter:0.8.1'
+    compile 'com.jaynewstrom.json:retrofit-converter:0.8.3'
 }
 ```
 
