@@ -12,15 +12,11 @@ import com.jaynewstrom.json.runtime.internal.StringJsonAdapter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class JsonDeserializerFactory {
+public abstract class JsonDeserializerFactory {
     final Map<Class<?>, JsonDeserializer<?>> deserializerMap;
 
     public JsonDeserializerFactory() {
-        this(0);
-    }
-
-    public JsonDeserializerFactory(int initialMapSize) {
-        deserializerMap = new LinkedHashMap<>(initialMapSize + 20);
+        deserializerMap = new LinkedHashMap<>();
         register(BooleanJsonAdapter.INSTANCE);
         register(ByteJsonAdapter.INSTANCE);
         register(DoubleJsonAdapter.INSTANCE);

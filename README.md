@@ -17,8 +17,7 @@ How is it different from other json libraries?
 How does it work?
 -----------------
 The library uses a custom gradle task to generate models based on the definitions you provide.
-The gradle task also generates the serializers and deserializers associated with your model definitions.
-There's also an annotation processor that automatically registers serializers and deserializers.
+It can also generate and automatically register serializers and deserializers.  
 
 Setup
 -----
@@ -35,8 +34,8 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'com.jaynewstrom.json'
 
-dependencies {
-    annotationProcessor 'com.jaynewstrom.json:composite:0:8:1'
+json {
+    defaultPackage {your base package here}
 }
 ```
 
@@ -50,7 +49,6 @@ An example json file is below.
   "createSerializer": true, // Not required, defaults to false.
   "createDeserializer": false, // Not required, defaults to false.
   "useAutoValue": true, // Not required, defaults to false.
-  "addToCompositeFactory": true, // Not required, defaults to true.
   "fields": [
     {
       "name": "foo", // Required!
@@ -69,7 +67,7 @@ An example json file is below.
 Custom Serializers/Deserializers
 --------------------------------
 Have a type that you can't generate? Platform types such as java.Util.Date can still be (de)serialized!
-Just add the `@AddToCompositeFactory` annotation to your custom (de)serializers.
+Just call `realJsonDeserializerFactory.register(...)` or `realJsonSerializerFactory.register(...)` to register your custom (de)serializers.
 
 Field Specific Serializers/Deserializers
 ----------------------------------------
@@ -81,7 +79,7 @@ Working with other json parsers
 -------------------------------
 Want to work with data that is a little more dynamic? Want to use jackson-databind? Have models that aren't performance critical?
 You can use a custom `JsonSerializer` or `JsonDeserializer` to bridge the gap between the libraries!
-Just add the `@AddToCompositeFactory` annotation to the class to register your custom (de)serializers.
+Just call `realJsonDeserializerFactory.register(...)` or `realJsonSerializerFactory.register(...)` to register your custom (de)serializers.
 
 Use with AutoValue
 ------------------
@@ -115,7 +113,7 @@ Add the converter to your retrofit instance.
 ```java
 new Retrofit.Builder()
     ...
-    .addConverterFactory(JsonConverterFactory.create(new JsonFactory(), new CompositeJsonSerializerFactory(), new CompositeJsonDeserializerFactory()))
+    .addConverterFactory(JsonConverterFactory.create(new JsonFactory(), new RealJsonSerializerFactory(), new RealJsonDeserializerFactory()))
     .build();
 ```
 

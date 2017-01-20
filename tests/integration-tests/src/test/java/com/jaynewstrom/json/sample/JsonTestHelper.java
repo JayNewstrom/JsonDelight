@@ -3,12 +3,8 @@ package com.jaynewstrom.json.sample;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.jaynewstrom.json.runtime.CompositeJsonDeserializerFactory;
-import com.jaynewstrom.json.runtime.CompositeJsonSerializerFactory;
 import com.jaynewstrom.json.runtime.JsonDeserializer;
-import com.jaynewstrom.json.runtime.JsonDeserializerFactory;
 import com.jaynewstrom.json.runtime.JsonSerializer;
-import com.jaynewstrom.json.runtime.JsonSerializerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,8 +12,8 @@ import java.io.StringWriter;
 
 public final class JsonTestHelper {
     private final JsonFactory jsonFactory = new JsonFactory();
-    private final JsonDeserializerFactory deserializerFactory = new CompositeJsonDeserializerFactory();
-    private final JsonSerializerFactory serializerFactory = new CompositeJsonSerializerFactory();
+    private final RealJsonDeserializerFactory deserializerFactory = new RealJsonDeserializerFactory();
+    private final RealJsonSerializerFactory serializerFactory = new RealJsonSerializerFactory();
 
     public JsonTestHelper() {
     }

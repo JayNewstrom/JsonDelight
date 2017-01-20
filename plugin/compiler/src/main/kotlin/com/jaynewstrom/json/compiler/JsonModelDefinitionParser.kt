@@ -10,7 +10,7 @@ import java.io.File
 import java.util.ArrayList
 
 data class JsonModelDefinitionParser(val file: File, val createSerializerByDefault: Boolean,
-        val createDeserializerByDefault: Boolean, val useAutoValueByDefault: Boolean, val addToCompositeFactory: Boolean) {
+        val createDeserializerByDefault: Boolean, val useAutoValueByDefault: Boolean) {
     fun parse(): ModelDefinition {
         val objectMapper = ObjectMapper()
         val modelJson = objectMapper.readTree(file)
@@ -23,10 +23,8 @@ data class JsonModelDefinitionParser(val file: File, val createSerializerByDefau
         val createSerializer = modelJson.getBooleanOrDefault("createSerializer", createSerializerByDefault)
         val createDeserializer = modelJson.getBooleanOrDefault("createDeserializer", createDeserializerByDefault)
         val useAutoValue = modelJson.getBooleanOrDefault("useAutoValue", useAutoValueByDefault)
-        val addToCompositeFactory = modelJson.getBooleanOrDefault("addToCompositeFactory", addToCompositeFactory)
-        onlyContains(modelJson, supportedTypeAttributes(), "type")
-        return ModelDefinition(isPublic, modelName, fieldDefinitions, createSerializer, createDeserializer, useAutoValue,
-                addToCompositeFactory)
+        onlyContains(modelJson, supportedTypeNames(), "type")
+        return ModelDefinition(isPublic, modelName, fieldDefinitions, createSerializer, createDeserializer, useAutoValue)
     }
 
     private fun parseField(fieldJson: JsonNode, modelIsPublic: Boolean): FieldDefinition {
@@ -55,7 +53,7 @@ data class JsonModelDefinitionParser(val file: File, val createSerializerByDefau
         if (fieldJson.hasNonNull("customDeserializer")) {
             customDeserializer = ClassName.bestGuess(fieldJson.get("customDeserializer").asText())
         }
-        onlyContains(fieldJson, supportedFieldAttributes(), "field")
+        onlyContains(fieldJson, supportedFieldNames(), "field")
         return FieldDefinition(isPublic, isRequired, type, fieldName, jsonName, customSerializer, customDeserializer)
     }
 
@@ -71,11 +69,11 @@ data class JsonModelDefinitionParser(val file: File, val createSerializerByDefau
         }
     }
 
-    private fun supportedTypeAttributes(): Set<String> {
-        return setOf("public", "fields", "createSerializer", "createDeserializer", "useAutoValue", "addToCompositeFactory")
+    private fun supportedTypeNames(): Set<String> {
+        return setOf("public", "fields", "createSerializer", "createDeserializer", "useAutoValue")
     }
 
-    private fun supportedFieldAttributes(): Set<String> {
+    private fun supportedFieldNames(): Set<String> {
         return setOf("public", "name", "jsonName", "type", "list", "required", "customSerializer", "customDeserializer")
     }
 }
