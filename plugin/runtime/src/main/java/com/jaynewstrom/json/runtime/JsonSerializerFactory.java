@@ -6,6 +6,7 @@ import com.jaynewstrom.json.runtime.internal.DoubleJsonAdapter;
 import com.jaynewstrom.json.runtime.internal.FloatJsonAdapter;
 import com.jaynewstrom.json.runtime.internal.IntegerJsonAdapter;
 import com.jaynewstrom.json.runtime.internal.LongJsonAdapter;
+import com.jaynewstrom.json.runtime.internal.MapSerializer;
 import com.jaynewstrom.json.runtime.internal.ShortJsonAdapter;
 import com.jaynewstrom.json.runtime.internal.StringJsonAdapter;
 
@@ -34,5 +35,9 @@ public abstract class JsonSerializerFactory {
     public final <T> JsonSerializer<T> get(Class<T> modelClass) {
         // noinspection unchecked
         return (JsonSerializer<T>) serializerMap.get(modelClass);
+    }
+
+    public final <T> JsonSerializer<Map<String, T>> getMapSerializer(Class<T> mapValueClass) {
+        return new MapSerializer<>(get(mapValueClass));
     }
 }

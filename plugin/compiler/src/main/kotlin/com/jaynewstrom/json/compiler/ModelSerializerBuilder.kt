@@ -44,6 +44,7 @@ internal data class ModelSerializerBuilder(val name: String, val fields: List<Fi
         methodBuilder.addStatement("$JSON_GENERATOR_VARIABLE_NAME.writeEndObject()")
     }
 
+    // TODO: Add map support!
     private fun FieldDefinition.serialize(methodBuilder: MethodSpec.Builder) {
         val primitiveType = PrimitiveType.fromTypeNameOrBoxedTypeName(type)
         if (customSerializer == null && primitiveType != null) {

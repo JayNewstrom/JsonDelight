@@ -127,6 +127,7 @@ internal data class ModelDeserializerBuilder(val name: String, val fields: List<
         }
     }
 
+    // TODO: Add map support!
     private fun FieldDefinition.assignVariable(methodBuilder: MethodSpec.Builder) {
         val primitiveType = PrimitiveType.fromTypeNameOrBoxedTypeName(type)
         if (customDeserializer == null && primitiveType != null) {

@@ -6,6 +6,7 @@ import com.jaynewstrom.json.runtime.internal.DoubleJsonAdapter;
 import com.jaynewstrom.json.runtime.internal.FloatJsonAdapter;
 import com.jaynewstrom.json.runtime.internal.IntegerJsonAdapter;
 import com.jaynewstrom.json.runtime.internal.LongJsonAdapter;
+import com.jaynewstrom.json.runtime.internal.MapDeserializer;
 import com.jaynewstrom.json.runtime.internal.ShortJsonAdapter;
 import com.jaynewstrom.json.runtime.internal.StringJsonAdapter;
 
@@ -27,12 +28,16 @@ public abstract class JsonDeserializerFactory {
         register(StringJsonAdapter.INSTANCE);
     }
 
+    public final void register(JsonDeserializer<?> jsonDeserializer) {
+        deserializerMap.put(jsonDeserializer.modelClass(), jsonDeserializer);
+    }
+
     public final <T> JsonDeserializer<T> get(Class<T> modelClass) {
         // noinspection unchecked
         return (JsonDeserializer<T>) deserializerMap.get(modelClass);
     }
 
-    public final void register(JsonDeserializer<?> jsonDeserializer) {
-        deserializerMap.put(jsonDeserializer.modelClass(), jsonDeserializer);
+    public final <T> JsonDeserializer<Map<String, T>> getMapDeserializer(Class<T> mapValueClass) {
+        return new MapDeserializer<>(get(mapValueClass));
     }
 }

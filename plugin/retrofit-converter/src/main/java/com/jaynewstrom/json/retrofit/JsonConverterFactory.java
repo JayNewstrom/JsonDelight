@@ -18,6 +18,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
 
+// TODO: Add map support!
 public final class JsonConverterFactory extends Converter.Factory {
     private final JsonFactory jsonFactory;
     private final JsonSerializerFactory serializerFactory;
