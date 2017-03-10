@@ -1,0 +1,26 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath dep.androidPlugin
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
+
+    defaultConfig {
+        minSdkVersion 15
+        consumerProguardFile 'proguard-rules.pro'
+    }
+}
+
+dependencies {
+    compile project(':runtime')
+}
+
+apply from: rootProject.file('publish.gradle')
