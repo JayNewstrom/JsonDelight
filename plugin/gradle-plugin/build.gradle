@@ -6,6 +6,7 @@ dependencies {
     compile dep.kotlinStdLib
     compile dep.androidPlugin
     compile project(':compiler')
+    compile 'com.squareup.okio:okio:1.11.0'
 }
 
 apply from: rootProject.file('publish.gradle')

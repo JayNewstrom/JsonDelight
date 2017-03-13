@@ -29,8 +29,6 @@ class JsonPlugin : Plugin<Project> {
     private fun <T : BaseVariant> configureAndroid(project: Project, variants: DomainObjectSet<T>) {
         project.extensions.create("json", JsonExtension::class.java)
 
-        val generateJsonModel = project.task("generateJsonModel")
-
         val compileDeps = project.configurations.getByName("compile").dependencies
         project.gradle.addListener(object : DependencyResolutionListener {
             override fun beforeResolve(dependencies: ResolvableDependencies?) {
@@ -43,25 +41,41 @@ class JsonPlugin : Plugin<Project> {
         })
 
         variants.all { variant ->
-            val taskName = "generate${variant.name.capitalize()}JsonModel"
-            val task = project.tasks.create(taskName, JsonTask::class.java) { jsonTask ->
-                val extension = project.extensions.getByType(JsonExtension::class.java)
-                jsonTask.defaultPackage = variant.generateBuildConfig.buildConfigPackageName
-                jsonTask.createSerializerByDefault = extension.createSerializerByDefault
-                jsonTask.createDeserializerByDefault = extension.createDeserializerByDefault
-                jsonTask.useAutoValueByDefault = extension.useAutoValueByDefault
-            }
-            task.group = "jsonmodel"
-            task.buildDirectory = project.buildDir
-            task.description = "Generate Json Models and Factories for ${variant.name}"
-            task.source("src")
-            task.include("**/json/**/*.$FILE_EXTENSION".replace('/', File.separatorChar))
-            task.exclude("**${File.separatorChar}resources${File.separatorChar}**")
-            task.exclude("**${File.separatorChar}assets${File.separatorChar}**")
+            val modelsAndFactoriesTask = createTaskForGeneratingModelsAndFactories(project, variant)
+            variant.registerJavaGeneratingTask(modelsAndFactoriesTask, modelsAndFactoriesTask.outputDirectory)
 
-            generateJsonModel.dependsOn(task)
-
-            variant.registerJavaGeneratingTask(task, task.outputDirectory)
+            val manifestTask = createTaskForGeneratingManifest(project, variant)
+            variant.registerJavaGeneratingTask(manifestTask, manifestTask.outputDirectory)
         }
+    }
+
+    private fun createTaskForGeneratingModelsAndFactories(project: Project, variant: BaseVariant): JsonTask {
+        val taskName = "generate${variant.name.capitalize()}JsonModel"
+        val task = project.tasks.create(taskName, JsonTask::class.java) { jsonTask ->
+            val extension = project.extensions.getByType(JsonExtension::class.java)
+            jsonTask.defaultPackage = variant.generateBuildConfig.buildConfigPackageName
+            jsonTask.createSerializerByDefault = extension.createSerializerByDefault
+            jsonTask.createDeserializerByDefault = extension.createDeserializerByDefault
+            jsonTask.useAutoValueByDefault = extension.useAutoValueByDefault
+        }
+        task.group = "jsonmodel"
+        task.buildDirectory = project.buildDir
+        task.description = "Generate Json Models and Factories for ${variant.name}"
+        task.source("src")
+        task.include("**/json/**/*.$FILE_EXTENSION".replace('/', File.separatorChar))
+        task.exclude("**${File.separatorChar}resources${File.separatorChar}**")
+        task.exclude("**${File.separatorChar}assets${File.separatorChar}**")
+        return task
+    }
+
+    private fun createTaskForGeneratingManifest(project: Project, variant: BaseVariant): ManifestTask {
+        val taskName = "generate${variant.name.capitalize()}JsonManifest"
+        val task = project.tasks.create(taskName, ManifestTask::class.java) { manifestTask ->
+            manifestTask.defaultPackage = variant.generateBuildConfig.buildConfigPackageName
+        }
+        task.group = "jsonmodel"
+        task.outputDirectory = project.file("${project.buildDir}/generated/res/json/${variant.flavorName}/${variant.buildType.name}/")
+        task.description = "Generate Json Manifest for ${variant.name}"
+        return task
     }
 }
