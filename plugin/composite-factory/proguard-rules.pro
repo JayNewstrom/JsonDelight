@@ -1,0 +1,2 @@
+-keep public class * extends com.jaynewstrom.json.runtime.JsonSerializerFactory { public <init>(); }
+-keep public class * extends com.jaynewstrom.json.runtime.JsonDeserializerFactory { public <init>(); }
