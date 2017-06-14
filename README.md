@@ -27,7 +27,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.jaynewstrom.json:gradle-plugin:0.13.0'
+        classpath 'com.jaynewstrom.json:gradle-plugin:0.14.0'
     }
 }
 
@@ -101,7 +101,7 @@ Add the retrofit dependency to your `build.gradle`.
 ```groovy
 dependencies {
     ...
-    compile 'com.jaynewstrom.json:retrofit-converter:0.13.0'
+    compile 'com.jaynewstrom.json:retrofit-converter:0.14.0'
 }
 ```
 
