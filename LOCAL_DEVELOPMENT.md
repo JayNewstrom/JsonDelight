@@ -1,7 +1,6 @@
 Local Development
 =================
-This project uses the new composite gradle build feature, which is not yet supported by intellij.
-In order to make changes, it's easiest if you open up the `plugin` directory and the `tests` directory separately in Android Studio.
+This project uses the new composite gradle build feature.
 Testing local changes can be done using `./gradlew test` from the root of the repository.
 
 Test Local Changes

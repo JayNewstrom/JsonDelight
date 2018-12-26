@@ -1,6 +1,6 @@
 Overview
 --------
-A predictable and fast json parser that doesn't use reflection for Android.
+A predictable and fast json parser that uses minimal reflection for Android.
 Define your models in json - The library will generate models, serializers, and deserializers automatically at build time.
 
 How fast is it?
@@ -11,8 +11,8 @@ It's very comparable in speed with [LoganSquare](https://github.com/bluelinelabs
 How is it different from other json libraries?
 ----------------------------------------------
 - Strictly enforced immutable types
-- 100% Generated code rather than using reflection
-- Fully proguard ready
+- Generated code for models, serializers and deserializers, no reflection when creating models.
+- Fully proguard ready (models, serializers and deserializers can all be obfuscated, and removed by proguard if unused.)
 
 How does it work?
 -----------------
@@ -27,7 +27,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.jaynewstrom.json:gradle-plugin:0.15.5'
+        classpath 'com.jaynewstrom.json:gradle-plugin:0.20.0'
     }
 }
 
@@ -62,7 +62,7 @@ An example json file is below.
 Custom Serializers/Deserializers
 --------------------------------
 Have a type that you can't generate? Platform types such as java.Util.Date can still be (de)serialized!
-Just call `realJsonDeserializerFactory.register(...)` or `realJsonSerializerFactory.register(...)` to register your custom (de)serializers.
+Just call `jsonDeserializerFactory.register(...)` or `jsonSerializerFactory.register(...)` to register your custom (de)serializers.
 
 Field Specific Serializers/Deserializers
 ----------------------------------------
@@ -74,7 +74,7 @@ Working with other json parsers
 -------------------------------
 Want to work with data that is a little more dynamic? Want to use jackson-databind? Have models that aren't performance critical?
 You can use a custom `JsonSerializer` or `JsonDeserializer` to bridge the gap between the libraries!
-Just call `realJsonDeserializerFactory.register(...)` or `realJsonSerializerFactory.register(...)` to register your custom (de)serializers.
+Just call `jsonDeserializerFactory.register(...)` or `jsonSerializerFactory.register(...)` to register your custom (de)serializers.
 
 Use with Retrofit
 -----------------
@@ -83,7 +83,7 @@ Add the retrofit dependency to your `build.gradle`.
 ```groovy
 dependencies {
     ...
-    compile 'com.jaynewstrom.json:retrofit-converter:0.15.5'
+    compile 'com.jaynewstrom.json:retrofit-converter:0.20.0'
 }
 ```
 
@@ -92,17 +92,11 @@ Add the converter to your retrofit instance.
 ```java
 new Retrofit.Builder()
     ...
-    .addConverterFactory(JsonConverterFactory.create(new JsonFactory(), new RealJsonSerializerFactory(), new RealJsonDeserializerFactory()))
+    .addConverterFactory(JsonConverterFactory.create(new JsonFactory(), new JsonSerializerFactory(), new JsonDeserializerFactory()))
     .build();
 ```
 
 Any models used in a retrofit call will be run through the converter.
-
-Upcoming Features
------------------
-- Better error messages - Please report difficult to understand errors!
-- Easier model definition using code DSL
-- Better documentation - Please report areas that need more/better documentation!
 
 Local Development
 -----------------
