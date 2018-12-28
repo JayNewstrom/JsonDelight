@@ -1,0 +1,3 @@
+steps:
+- name: 'us.gcr.io/jsondelight/jsondelight'
+  args: ['./gradlew', 'test', 'check']
