@@ -26,7 +26,7 @@ Releasing to bintray
 4. Update versions in `README.md`
 5. `rm -rf ~/.m2/repositories/com/jaynewstrom/json/*`
 6. `cd plugin`
-7. `./gradlew clean bintrayUpload`
+7. `./gradlew clean bintrayUpload --max-workers=1`
 8. Publish the artifacts from the bintray website
 9. `cd ..`
 10. `git add . && git commit -m "Release version x.y.z"`
